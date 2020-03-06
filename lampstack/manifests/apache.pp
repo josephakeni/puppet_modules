@@ -7,7 +7,7 @@ class lampstack::apache (
 
 ) inherits ::lampstack::params {
 
-	package {$package:
+	package { $package:
 		ensure => $ensure,
 
 	}

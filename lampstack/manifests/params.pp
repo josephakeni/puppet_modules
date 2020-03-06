@@ -1,12 +1,12 @@
 class lampstack::params {
 
 # Required packages
-	$apachepackage	= 'http'
+	$apachepackage	= 'httpd'
 	$mariadbpackage	= 'mariadb-server'
 	$phppackage	=	['php', 'php-mysql', 'php-fpm']
 
 # Required services
-	$apacheservice  = 'http'
+	$apacheservice  = 'httpd'
 	$mariadbservice = 'mariadb'
 	$ensureservice	=	'running'
 

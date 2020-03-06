@@ -50,15 +50,52 @@ class apache {
 #}
 
 # install httpd package
-        package { 'httpd':
+#        package { 'httpd':
   #             require => Exec['yum update'],        # require 'yum update' before installing
-                ensure => installed,
-        }
+#                ensure => installed,
+#        }
 
 # ensure httpd service is running
-       service { 'httpd':
-               ensure => running,
-       }
+#       service { 'httpd':
+#               ensure => running,
+#       }
 
+# Variables for apache Module
+
+$pkg	 = "httpd"
+$html_file = "/var/www/html/index.html"
+$httpd_ser	= "httpd" 
+$message = "<html>
+                <body>
+                        <h1> Hello All, This test is to install Apache Webserver</h1>
+                        <h4> This is Awesome!!!! </h4>
+                </body>
+        </html>"
+
+  # Install epel-repository package if not installed
+  exec { "Install EPEL-Repo":
+    command => "/usr/bin/yum -y install epel-release",
+  }
+
+# Apache Package Installation Code
+  package { "${pkg}":
+    ensure => 'present',
+    before => Service["${httpd_ser}"],
+   }
+
+# Configuring simple index.html file with some test content
+  file {"${html_file}":
+    ensure  => 'present',
+    source => "puppet:///modules/apache/index.html",
+    require => Package["${pkg}"],
+  }
+
+# Enable and Start apache service
+  service {"${httpd_ser}":
+    ensure    => 'running',
+    enable    => 'true',
+    subscribe => File["${html_file}"],
+  }
 
 }
+
